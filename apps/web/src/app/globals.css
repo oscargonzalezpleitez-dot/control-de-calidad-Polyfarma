@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Estilos QMS farmacéutico */
+.pharma-card {
+  @apply bg-white rounded-lg border border-gray-200 shadow-card p-6;
+}
+
+.pharma-header {
+  @apply bg-gradient-to-r from-gray-950 to-pharma-800 text-white;
+}
+
+/* Botones modernos */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-pharma-600 hover:bg-pharma-700 active:bg-pharma-800 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-pharma-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-50 active:bg-gray-100 text-gray-800 text-sm font-semibold rounded-lg border border-gray-300 shadow-sm hover:shadow-md active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-pharma-500 focus:ring-offset-2;
+}
+
+.btn-danger {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 active:bg-gray-200 text-sm font-medium rounded-lg active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-pharma-500;
+}
+
+.btn-icon {
+  @apply inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 active:bg-gray-200 active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-pharma-500;
+}
+
+.audit-badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+}
+
+.status-badge {
+  @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+}
+
+/* Indicadores de estado GMP */
+.status-approved { @apply bg-green-100 text-green-800; }
+.status-pending { @apply bg-yellow-100 text-yellow-800; }
+.status-draft { @apply bg-gray-100 text-gray-700; }
+.status-rejected { @apply bg-red-100 text-red-800; }
+.status-cancelled { @apply bg-orange-100 text-orange-800; }
+.status-invalidated { @apply bg-red-200 text-red-900; }
+
+/* Campo requerido */
+.field-required::after {
+  content: ' *';
+  @apply text-red-500;
+}
+
+/* Print styles para reportes */
+@media print {
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  body { font-size: 11pt; }
+  .pharma-card { border: 1px solid #000; box-shadow: none; }
+}
+
+/* ─── Certificado de Análisis de Agua Purificada ─── */
+/* Fuente Arimo (métrica equivalente a Arial, disponible en Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
+/* Salto de página entre certificados al imprimir en lote */
+.print-page-break {
+  page-break-after: always;
+  break-after: page;
+}
+.print-page-break:last-child {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+@media print {
+  /* Una hoja carta vertical exacta */
+  @page { size: letter portrait; margin: 0; }
+
+  /* Certificados en lote: cada uno en su propia hoja */
+  #print-all-certs .print-page-break { page-break-after: always; break-after: page; }
+  #print-all-certs .print-page-break:last-child { page-break-after: avoid; break-after: avoid; }
+
+  /* Ocultar todo excepto la página del certificado */
+  body > * { display: none !important; }
+  .coa-page,
+  .coa-page * { display: revert !important; }
+
+  /* El contenedor gris de pantalla desaparece */
+  .coa-screen-bg {
+    background: #fff !important;
+    padding: 0 !important;
+    min-height: unset !important;
+    display: block !important;
+  }
+
+  /* La página ocupa exactamente una hoja */
+  .coa-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: unset !important;
+    border: none !important;
+  }
+
+  /* Barra de herramientas y layout del dashboard no se imprimen */
+  .coa-toolbar,
+  nav, aside, header { display: none !important; }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-gray-100; }
+::-webkit-scrollbar-thumb { @apply bg-gray-400 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-gray-500; }

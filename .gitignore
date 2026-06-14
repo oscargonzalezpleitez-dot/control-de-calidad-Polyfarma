@@ -1,0 +1,68 @@
+# ── Dependencias ──────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Variables de entorno (NUNCA al repositorio) ────────
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+apps/api/.env
+apps/web/.env.local
+
+# ── Build outputs ──────────────────────────────────────
+dist/
+build/
+.next/
+out/
+apps/api/dist/
+apps/web/.next/
+apps/web/out/
+
+# ── Logs ───────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ── Archivos subidos / generados ───────────────────────
+apps/api/uploads/
+apps/api/uploads/reports/
+apps/api/uploads/attachments/
+apps/api/uploads/templates/
+
+# ── OS / Editor ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Prisma ─────────────────────────────────────────────
+# Las migraciones SÍ van al repo. Solo excluir datos locales.
+apps/api/prisma/dev.db
+apps/api/prisma/*.db-journal
+
+# ── Tests ──────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Vercel ─────────────────────────────────────────────
+.vercel
+
+# ── Docker ─────────────────────────────────────────────
+# docker-compose.override.yml
+
+# ── TypeScript ─────────────────────────────────────────
+*.tsbuildinfo
+
+# ── SSL / certificados locales ─────────────────────────
+infrastructure/nginx/ssl/
+*.pem
+*.key
+*.crt
