@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 ENV DOCKER_BUILD=true
-RUN npm run build
+RUN mkdir -p public && npm run build
 
 FROM base AS runner
 WORKDIR /app
