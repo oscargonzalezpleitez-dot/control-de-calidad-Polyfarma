@@ -4,7 +4,7 @@ WORKDIR /app
 
 FROM base AS builder
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npx prisma generate
 RUN npm run build

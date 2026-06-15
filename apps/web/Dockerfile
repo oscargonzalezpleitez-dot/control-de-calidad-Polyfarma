@@ -4,11 +4,11 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 FROM base AS builder
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 ENV DOCKER_BUILD=true
 RUN npm run build
