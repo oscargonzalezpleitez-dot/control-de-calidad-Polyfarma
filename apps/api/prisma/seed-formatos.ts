@@ -140,7 +140,7 @@ async function main() {
       // Sec 1 - Identificación
       { formatId: aguaCert.id, sectionId: certSec1.id, label: 'Punto de Uso', name: 'punto_muestreo', type: FieldType.TEXT, order: 1, isRequired: true, placeholder: 'Ej: 9C' },
       { formatId: aguaCert.id, sectionId: certSec1.id, label: 'Ubicación del Punto de Uso', name: 'tipo_agua', type: FieldType.TEXT, order: 2, isRequired: true, placeholder: 'Ej: Lavado' },
-      { formatId: aguaCert.id, sectionId: certSec1.id, label: 'N° de Lote Interno', name: 'numero_lote', type: FieldType.TEXT, order: 3, isRequired: true, placeholder: 'Ej: AP050126' },
+      { formatId: aguaCert.id, sectionId: certSec1.id, label: 'N° de Lote Interno', name: 'numero_lote', type: FieldType.TEXT, order: 3, isRequired: true, placeholder: 'Ej: AP290126' },
       { formatId: aguaCert.id, sectionId: certSec1.id, label: 'Fecha de Análisis', name: 'fecha_analisis', type: FieldType.DATE, order: 4, isRequired: true },
       { formatId: aguaCert.id, sectionId: certSec1.id, label: 'Responsable de Muestreo / Analista', name: 'analista', type: FieldType.TEXT, order: 5, isRequired: true },
       { formatId: aguaCert.id, sectionId: certSec1.id, label: 'Fecha de Fabricación', name: 'fecha_produccion', type: FieldType.DATE, order: 6, isRequired: true },
@@ -148,7 +148,7 @@ async function main() {
       // Sec 2 - Fisicoquímicos
       { formatId: aguaCert.id, sectionId: certSec2.id, label: 'Temperatura', name: 'temperatura', type: FieldType.NUMBER, order: 1, isRequired: true, maxValue: 40, decimalPlaces: 2, unit: '°C', helpText: 'No mayor a 40°C' },
       { formatId: aguaCert.id, sectionId: certSec2.id, label: 'Conductividad', name: 'conductividad', type: FieldType.NUMBER, order: 2, isRequired: true, maxValue: 1.3, decimalPlaces: 2, unit: 'µS/cm', helpText: 'No mayor a 1.3 µS/cm' },
-      { formatId: aguaCert.id, sectionId: certSec2.id, label: 'TOC / TDS', name: 'toc', type: FieldType.NUMBER, order: 3, isRequired: true, maxValue: 500, decimalPlaces: 2, unit: 'ppb', helpText: 'No mayor a 500 ppb' },
+      { formatId: aguaCert.id, sectionId: certSec2.id, label: 'TOC', name: 'toc', type: FieldType.NUMBER, order: 3, isRequired: true, maxValue: 500, decimalPlaces: 2, unit: 'ppb', helpText: 'No mayor a 500 ppb' },
       { formatId: aguaCert.id, sectionId: certSec2.id, label: 'pH', name: 'ph', type: FieldType.NUMBER, order: 4, isRequired: true, minValue: 5, maxValue: 7, decimalPlaces: 2, helpText: '5.0 – 7.0' },
       // Sec 3 - Microbiológicos
       { formatId: aguaCert.id, sectionId: certSec3.id, label: 'Recuento Total de Bacterias Aerobias Mesófilas', name: 'bacterias', type: FieldType.TEXT, order: 1, isRequired: true, placeholder: 'Conforme', helpText: '<100 UFC' },

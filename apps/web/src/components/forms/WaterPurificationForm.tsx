@@ -56,7 +56,7 @@ export function WaterPurificationForm({ rec, values, setVal, isEditable }: Water
   const FISICO = [
     { name: 'temperatura',   label: 'TEMPERATURA',    spec: 'No mayor a 40°C',      unit: '°C'    },
     { name: 'conductividad', label: 'CONDUCTIVIDAD',  spec: 'No mayor a 1.3 µS/cm', unit: 'µS/cm' },
-    { name: 'toc',           label: 'TOC / TDS',      spec: 'No mayor a 500 ppb',   unit: 'ppb'   },
+    { name: 'toc',           label: 'TOC',             spec: 'No mayor a 500 ppb',   unit: 'ppb'   },
     { name: 'ph',            label: 'pH',             spec: '5.0 – 7.0',            unit: ''      },
   ];
 
@@ -134,11 +134,12 @@ export function WaterPurificationForm({ rec, values, setVal, isEditable }: Water
               <td style={ECELL}><TxtInput name="punto_muestreo" placeholder="Ej. 9C" /></td>
               <td style={ECELL}><TxtInput name="tipo_agua" placeholder="Ej. Lavado" /></td>
               <td style={{ ...CELL, textAlign: 'center', padding: '4px 2px', fontWeight: 700, fontSize: 11 }}>{rec.code}</td>
-              <td style={ECELL}><TxtInput name="numero_lote" placeholder="Ej. AP050126" /></td>
+              <td style={ECELL}><TxtInput name="numero_lote" placeholder="Ej. AP290126" /></td>
               <td style={ECELL}>
                 <input
-                  type="date" disabled={!isEditable}
+                  type="text" disabled={!isEditable}
                   value={val('fecha_analisis')} onChange={e => set('fecha_analisis', e.target.value)}
+                  placeholder={isEditable ? 'DDMMAAAA' : ''}
                   style={{ ...BASE, fontSize: 10 }}
                 />
               </td>
@@ -151,7 +152,7 @@ export function WaterPurificationForm({ rec, values, setVal, isEditable }: Water
             </tr>
             {/* ── fila 4: datos responsable + F.Fab + Fecha Emisión ── */}
             <tr>
-              <td colSpan={2} style={ECELL}><TxtInput name="analista" placeholder="Nombre del analista" /></td>
+              <td colSpan={2} style={ECELL}><TxtInput name="analista" placeholder="Marisol Beltran" /></td>
               <td style={ECELL}>
                 <input
                   type="date" disabled={!isEditable}

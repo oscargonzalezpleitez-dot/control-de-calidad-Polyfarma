@@ -46,7 +46,15 @@ export class RecordsService {
       throw new BadRequestException('Solo se pueden crear registros de formatos aprobados.');
     }
 
-    const code = `${format.code}-${Date.now().toString(36).toUpperCase()}`;
+    let code: string;
+    if (format.code === 'CC-F-063') {
+      const count = await this.prisma.record.count({
+        where: { formatId: dto.formatId, isDeleted: false },
+      });
+      code = `PW${String(count + 1).padStart(3, '0')}`;
+    } else {
+      code = `${format.code}-${Date.now().toString(36).toUpperCase()}`;
+    }
 
     const record = await this.prisma.record.create({
       data: {
