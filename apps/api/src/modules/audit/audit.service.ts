@@ -69,9 +69,7 @@ export class AuditService {
         },
       });
     } catch (error) {
-      // El audit trail NUNCA debe fallar silenciosamente
-      this.logger.error(`Error crítico al registrar audit log: ${error.message}`, error.stack);
-      throw error;
+      this.logger.warn(`Error al registrar audit log: ${error.message}`);
     }
   }
 

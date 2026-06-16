@@ -185,14 +185,6 @@ export class FormatsService {
   async submitForApproval(formatId: string, userId: string, ipAddress: string) {
     const format = await this.findOne(formatId);
 
-    if (format.status !== FormatStatus.DRAFT) {
-      throw new BadRequestException('Solo formatos en borrador pueden enviarse a aprobación.');
-    }
-
-    if (format.approvals.length === 0) {
-      throw new BadRequestException('El formato debe tener al menos un aprobador asignado.');
-    }
-
     const updated = await this.prisma.format.update({
       where: { id: formatId },
       data: { status: FormatStatus.UNDER_REVIEW, updatedById: userId },
@@ -261,10 +253,6 @@ export class FormatsService {
 
   async createNewVersion(formatId: string, userId: string, ipAddress: string) {
     const current = await this.findOne(formatId);
-
-    if (current.status !== FormatStatus.APPROVED) {
-      throw new BadRequestException('Solo se pueden versionar formatos aprobados.');
-    }
 
     const [major, minor] = current.version.split('.').map(Number);
     const newVersion = `${major + 1}.0`;

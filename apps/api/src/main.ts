@@ -77,7 +77,7 @@ async function bootstrap() {
   if (configService.get('NODE_ENV') !== 'production') {
     const swaggerConfig = new DocumentBuilder()
       .setTitle('PharmaQMS API')
-      .setDescription('Sistema de Gestión de Calidad Farmacéutica - 21 CFR Part 11 Compliant')
+      .setDescription('Sistema de Gestión de Calidad')
       .setVersion('1.0')
       .addBearerAuth()
       .addTag('auth', 'Autenticación y Sesiones')

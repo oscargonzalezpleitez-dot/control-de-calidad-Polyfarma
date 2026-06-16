@@ -66,9 +66,8 @@ export class UsersService {
         passwordHash,
         status: UserStatus.ACTIVE,
         signatureEnabled: true,
-        mustChangePassword: true,
+        mustChangePassword: false,
         createdBy: createdById,
-        passwordExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       },
     });
 

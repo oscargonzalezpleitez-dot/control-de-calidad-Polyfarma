@@ -2,16 +2,15 @@ import { Controller, Post, Get, Patch, Body, Param, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { SignaturesService } from './signatures.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { UserRole, SignatureType, SignaturePurpose } from '@prisma/client';
-import { IsString, IsOptional, IsEnum, IsNotEmpty, MinLength, IsObject } from 'class-validator';
+import { SignatureType, SignaturePurpose } from '@prisma/client';
+import { IsString, IsOptional, IsEnum, IsNotEmpty, IsObject } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class CreateSignatureDto {
-  @ApiProperty() @IsString() @IsNotEmpty() password: string;
+  @ApiProperty() @IsString() @IsOptional() password?: string;
   @ApiProperty({ enum: SignatureType }) @IsEnum(SignatureType) type: SignatureType;
   @ApiProperty({ enum: SignaturePurpose }) @IsEnum(SignaturePurpose) purpose: SignaturePurpose;
-  @ApiProperty() @IsString() @MinLength(5) meaning: string;
+  @ApiProperty() @IsString() @IsNotEmpty() meaning: string;
   @ApiPropertyOptional() @IsOptional() @IsString() comments?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() recordId?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() approvalId?: string;
@@ -25,7 +24,7 @@ export class SignaturesController {
   constructor(private readonly signaturesService: SignaturesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear firma electrónica (21 CFR Part 11)' })
+  @ApiOperation({ summary: 'Crear firma electrónica' })
   createSignature(
     @Body() dto: CreateSignatureDto,
     @CurrentUser() user: any,
@@ -46,14 +45,13 @@ export class SignaturesController {
   }
 
   @Get(':id/verify')
-  @ApiOperation({ summary: 'Verificar integridad de firma electrónica' })
+  @ApiOperation({ summary: 'Verificar firma electrónica' })
   verifySignature(@Param('id') id: string) {
     return this.signaturesService.verifySignature(id);
   }
 
   @Patch(':id/revoke')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY)
-  @ApiOperation({ summary: 'Revocar firma electrónica (con auditoría)' })
+  @ApiOperation({ summary: 'Revocar firma electrónica' })
   revokeSignature(
     @Param('id') id: string,
     @Body('reason') reason: string,

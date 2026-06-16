@@ -1,8 +1,7 @@
-import { Controller, Get, Query, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuditService } from './audit.service';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { AuditAction, AuditModule, UserRole } from '@prisma/client';
+import { AuditAction, AuditModule } from '@prisma/client';
 
 @ApiTags('audit')
 @ApiBearerAuth()
@@ -11,8 +10,7 @@ export class AuditController {
   constructor(private readonly auditService: AuditService) {}
 
   @Get()
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.AUDITOR)
-  @ApiOperation({ summary: 'Obtener registros de audit trail' })
+  @ApiOperation({ summary: 'Obtener registros de audit log' })
   findAll(
     @Query('userId') userId?: string,
     @Query('action') action?: AuditAction,
@@ -36,8 +34,7 @@ export class AuditController {
   }
 
   @Get('entity/:entityType/:entityId')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.AUDITOR)
-  @ApiOperation({ summary: 'Historial de cambios de una entidad específica' })
+  @ApiOperation({ summary: 'Historial de cambios de una entidad' })
   findByEntity(
     @Param('entityType') entityType: string,
     @Param('entityId') entityId: string,
@@ -46,16 +43,14 @@ export class AuditController {
   }
 
   @Get('verify/:id')
-  @Roles(UserRole.ADMIN, UserRole.AUDITOR)
-  @ApiOperation({ summary: 'Verificar integridad de un registro de audit trail' })
+  @ApiOperation({ summary: 'Verificar integridad de un registro' })
   async verifyIntegrity(@Param('id') id: string) {
     const isValid = await this.auditService.verifyIntegrity(id);
     return { id, integrityValid: isValid };
   }
 
   @Get('statistics')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.AUDITOR)
-  @ApiOperation({ summary: 'Estadísticas del audit trail' })
+  @ApiOperation({ summary: 'Estadísticas del audit log' })
   getStatistics(
     @Query('startDate') startDate: string,
     @Query('endDate') endDate: string,

@@ -1,9 +1,7 @@
-import { Injectable, NotFoundException, BadRequestException, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { AuditAction, AuditModule, RecordStatus, FormatStatus, Prisma } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
-import * as bcrypt from 'bcryptjs';
 
 export interface CreateRecordDto {
   formatId: string;
@@ -42,9 +40,6 @@ export class RecordsService {
     });
 
     if (!format) throw new NotFoundException('Formato no encontrado.');
-    if (format.status !== FormatStatus.APPROVED) {
-      throw new BadRequestException('Solo se pueden crear registros de formatos aprobados.');
-    }
 
     let code: string;
     if (format.code === 'CC-F-063') {
@@ -96,9 +91,6 @@ export class RecordsService {
     });
 
     if (!record) throw new NotFoundException('Registro no encontrado.');
-    if (record.status === RecordStatus.CANCELLED || record.status === RecordStatus.INVALIDATED) {
-      throw new BadRequestException('No se pueden modificar registros cancelados o invalidados.');
-    }
 
     const results = await this.prisma.$transaction(async (tx) => {
       const savedValues = [];
@@ -107,7 +99,6 @@ export class RecordsService {
         const field = record.format.fields.find((f) => f.id === valueDto.fieldId);
         if (!field) continue;
 
-        // ALCOA+ - Registrar valor anterior
         const existing = await tx.recordFieldValue.findUnique({
           where: {
             recordId_fieldId_sectionIndex: {
@@ -146,7 +137,6 @@ export class RecordsService {
           },
         });
 
-        // Audit Trail por cada campo modificado (ALCOA+)
         if (existing && (existing.value !== valueDto.value || existing.valueNumeric !== valueDto.valueNumeric)) {
           await this.auditService.log({
             userId,
@@ -221,9 +211,6 @@ export class RecordsService {
   }
 
   async cancel(recordId: string, reason: string, userId: string, ipAddress: string) {
-    if (!reason || reason.trim().length < 10) {
-      throw new BadRequestException('El motivo de cancelación debe tener al menos 10 caracteres.');
-    }
 
     const record = await this.prisma.record.update({
       where: { id: recordId },
@@ -250,9 +237,6 @@ export class RecordsService {
   }
 
   async invalidate(recordId: string, reason: string, userId: string, ipAddress: string) {
-    if (!reason || reason.trim().length < 10) {
-      throw new BadRequestException('El motivo de invalidación debe tener al menos 10 caracteres.');
-    }
 
     const record = await this.prisma.record.update({
       where: { id: recordId },
@@ -283,19 +267,6 @@ export class RecordsService {
     userId: string,
     ipAddress: string,
   ) {
-    if (!reason || reason.trim().length < 10) {
-      throw new BadRequestException('El motivo de eliminación debe tener al menos 10 caracteres.');
-    }
-
-    // Verificar identidad: la contraseña debe corresponder al usuario que ejecuta la acción
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) throw new NotFoundException('Usuario no encontrado.');
-
-    const passwordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!passwordValid) {
-      throw new UnauthorizedException('Contraseña incorrecta. No se puede autorizar la eliminación.');
-    }
-
     const record = await this.prisma.record.findUnique({ where: { id: recordId } });
     if (!record) throw new NotFoundException('Registro no encontrado.');
     if (record.isDeleted) throw new BadRequestException('El registro ya fue eliminado.');

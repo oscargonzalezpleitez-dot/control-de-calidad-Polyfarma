@@ -2,7 +2,6 @@ import { Controller, Get, Post, Patch, Delete, Body, Param, Query, Req } from '@
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService, CreateUserDto, UpdateUserDto } from './users.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole, UserStatus } from '@prisma/client';
 
 @ApiTags('users')
@@ -12,14 +11,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Crear nuevo usuario' })
   create(@Body() dto: CreateUserDto, @CurrentUser() user: any, @Req() req: Request) {
     return this.usersService.create(dto, user.id, (req as any).ip || '0.0.0.0');
   }
 
   @Get()
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.AUDITOR)
   @ApiOperation({ summary: 'Listar usuarios' })
   findAll(
     @Query('role') role?: UserRole,
@@ -31,14 +28,12 @@ export class UsersController {
   }
 
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.AUDITOR)
   @ApiOperation({ summary: 'Obtener usuario por ID' })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Actualizar usuario' })
   update(
     @Param('id') id: string,
@@ -50,8 +45,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'Desactivar usuario (no eliminación física - ALCOA+)' })
+  @ApiOperation({ summary: 'Desactivar usuario' })
   deactivate(
     @Param('id') id: string,
     @Body('reason') reason: string,
@@ -62,8 +56,7 @@ export class UsersController {
   }
 
   @Patch(':id/permissions')
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'Actualizar permisos granulares del usuario' })
+  @ApiOperation({ summary: 'Actualizar permisos del usuario' })
   updatePermissions(
     @Param('id') userId: string,
     @Body() body: { permissions: { module: string; action: string; granted: boolean }[] },

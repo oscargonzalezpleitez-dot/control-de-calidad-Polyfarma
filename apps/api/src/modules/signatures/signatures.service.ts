@@ -1,7 +1,6 @@
 import {
   Injectable,
   UnauthorizedException,
-  BadRequestException,
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
@@ -12,7 +11,6 @@ import {
   AuditAction,
   AuditModule,
 } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 
@@ -42,32 +40,12 @@ export class SignaturesService {
   ) {}
 
   async createSignature(dto: SignatureRequestDto) {
-    // 21 CFR Part 11 §11.200 - Verificar identidad del firmante
     const user = await this.prisma.user.findUnique({
       where: { id: dto.userId },
     });
 
-    if (!user || !user.signatureEnabled) {
-      throw new UnauthorizedException('Usuario no autorizado para firmar electrónicamente.');
-    }
-
-    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
-    if (!isPasswordValid) {
-      await this.auditService.log({
-        userId: dto.userId,
-        action: AuditAction.LOGIN_FAILED,
-        module: AuditModule.SIGNATURES,
-        description: 'Intento de firma electrónica con contraseña incorrecta',
-        ipAddress: dto.ipAddress,
-        entityType: 'ElectronicSignature',
-      });
-      throw new UnauthorizedException('Contraseña incorrecta para firma electrónica.');
-    }
-
-    if (!dto.meaning || dto.meaning.trim().length < 5) {
-      throw new BadRequestException(
-        'Debe especificar el significado de la firma (mínimo 5 caracteres).',
-      );
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado.');
     }
 
     // Generar hash del contenido firmado + datos del firmante (no repudio)

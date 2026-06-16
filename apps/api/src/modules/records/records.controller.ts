@@ -2,8 +2,7 @@ import { Controller, Get, Post, Patch, Delete, Body, Param, Query, Req } from '@
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { RecordsService, CreateRecordDto, SaveFieldValuesDto } from './records.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { RecordStatus, UserRole } from '@prisma/client';
+import { RecordStatus } from '@prisma/client';
 
 @ApiTags('records')
 @ApiBearerAuth()
@@ -42,7 +41,7 @@ export class RecordsController {
   }
 
   @Patch(':id/values')
-  @ApiOperation({ summary: 'Guardar/actualizar valores de campos (con audit trail)' })
+  @ApiOperation({ summary: 'Guardar/actualizar valores de campos' })
   saveFieldValues(
     @Param('id') id: string,
     @Body() dto: SaveFieldValuesDto,
@@ -59,7 +58,7 @@ export class RecordsController {
   }
 
   @Patch(':id/cancel')
-  @ApiOperation({ summary: 'Cancelar registro (no eliminación física - ALCOA+)' })
+  @ApiOperation({ summary: 'Cancelar registro' })
   cancel(
     @Param('id') id: string,
     @Body('reason') reason: string,
@@ -70,8 +69,7 @@ export class RecordsController {
   }
 
   @Patch(':id/invalidate')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY)
-  @ApiOperation({ summary: 'Invalidar registro con motivo documentado (ALCOA+)' })
+  @ApiOperation({ summary: 'Invalidar registro' })
   invalidate(
     @Param('id') id: string,
     @Body('reason') reason: string,
@@ -82,8 +80,7 @@ export class RecordsController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'Eliminar registro (soft-delete) — requiere contraseña del administrador' })
+  @ApiOperation({ summary: 'Eliminar registro' })
   remove(
     @Param('id') id: string,
     @Body('reason') reason: string,

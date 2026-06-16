@@ -38,7 +38,7 @@ export class AttachmentsController {
   }
 
   @Get(':id/download')
-  @ApiOperation({ summary: 'Descargar adjunto (con verificación de integridad)' })
+  @ApiOperation({ summary: 'Descargar adjunto' })
   async download(@Param('id') id: string, @Res() res: Response) {
     const { attachment, filePath, integrityValid } = await this.attachmentsService.getFile(id);
 
@@ -53,7 +53,7 @@ export class AttachmentsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar adjunto (eliminación lógica - ALCOA+)' })
+  @ApiOperation({ summary: 'Eliminar adjunto' })
   softDelete(@Param('id') id: string, @CurrentUser() user: any, @Req() req: Request) {
     return this.attachmentsService.softDelete(id, user.id, (req as any).ip || '0.0.0.0');
   }

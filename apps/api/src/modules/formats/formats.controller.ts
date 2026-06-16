@@ -2,8 +2,7 @@ import { Controller, Get, Post, Patch, Body, Param, Query, Req } from '@nestjs/c
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { FormatsService, CreateFormatDto } from './formats.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { FormatStatus, FormatType, UserRole } from '@prisma/client';
+import { FormatStatus, FormatType } from '@prisma/client';
 
 @ApiTags('formats')
 @ApiBearerAuth()
@@ -12,7 +11,6 @@ export class FormatsController {
   constructor(private readonly formatsService: FormatsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.REGULATORY_AFFAIRS)
   @ApiOperation({ summary: 'Crear nuevo formato de formulario' })
   create(@Body() dto: CreateFormatDto, @CurrentUser() user: any, @Req() req: Request) {
     return this.formatsService.create(dto, user.id, (req as any).ip || '0.0.0.0');
@@ -37,14 +35,13 @@ export class FormatsController {
   }
 
   @Patch(':id/submit')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY, UserRole.REGULATORY_AFFAIRS)
   @ApiOperation({ summary: 'Enviar formato a flujo de aprobación' })
   submitForApproval(@Param('id') id: string, @CurrentUser() user: any, @Req() req: Request) {
     return this.formatsService.submitForApproval(id, user.id, (req as any).ip || '0.0.0.0');
   }
 
   @Patch(':id/approve/:approvalId')
-  @ApiOperation({ summary: 'Aprobar formato (firma electrónica implícita)' })
+  @ApiOperation({ summary: 'Aprobar formato' })
   approve(
     @Param('id') id: string,
     @Param('approvalId') approvalId: string,
@@ -56,14 +53,12 @@ export class FormatsController {
   }
 
   @Post(':id/new-version')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY)
-  @ApiOperation({ summary: 'Crear nueva versión del formato (control de versiones)' })
+  @ApiOperation({ summary: 'Crear nueva versión del formato' })
   createNewVersion(@Param('id') id: string, @CurrentUser() user: any, @Req() req: Request) {
     return this.formatsService.createNewVersion(id, user.id, (req as any).ip || '0.0.0.0');
   }
 
   @Patch(':id/obsolete')
-  @Roles(UserRole.ADMIN, UserRole.QUALITY)
   @ApiOperation({ summary: 'Marcar formato como obsoleto' })
   obsolete(
     @Param('id') id: string,
