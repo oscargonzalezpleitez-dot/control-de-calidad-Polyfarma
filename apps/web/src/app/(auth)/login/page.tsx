@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/auth.store';
+import Image from 'next/image';
 import { Shield, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -19,10 +20,17 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isLoading } = useAuthStore();
+  const { login, isLoading, clearAuth } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [requiresMfa, setRequiresMfa] = useState(false);
   const [error, setError] = useState('');
+
+  // Si llegamos a /login sin tokens válidos, limpiamos el estado de auth
+  // para evitar el loop: isAuthenticated=true pero sin tokens → API falla → redirect /login
+  useEffect(() => {
+    const hasToken = !!localStorage.getItem('accessToken');
+    if (!hasToken) clearAuth();
+  }, [clearAuth]);
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -56,11 +64,17 @@ export default function LoginPage() {
       <div className="relative w-full max-w-md">
         {/* Logo y título */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-pharma-600/20 rounded-2xl mb-4 backdrop-blur-sm border border-pharma-600/30 shadow-lg">
-            <Shield className="w-8 h-8 text-pharma-400" />
+          <div className="flex justify-center mb-4">
+            <Image
+              src="/logo-polyfarma.jpg"
+              alt="Laboratorios PolyFarma"
+              width={160}
+              height={104}
+              className="rounded-xl object-contain shadow-lg"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Laboratorio de Control de Calidad</h1>
-          <p className="text-pharma-500 text-base font-semibold mt-0.5 tracking-widest uppercase">Polyfarma</p>
           <p className="text-gray-500 text-xs mt-1">By Lic. Oscar Gonzalez</p>
           <div className="flex items-center justify-center gap-2 mt-3">
             <span className="px-2.5 py-0.5 bg-green-500/15 text-green-400 text-xs rounded-full border border-green-500/25 font-medium">

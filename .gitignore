@@ -55,6 +55,10 @@ coverage/
 # ── Vercel ─────────────────────────────────────────────
 .vercel
 
+# ── Firebase ───────────────────────────────────────────
+.firebase/
+apps/web/.firebase/
+
 # ── Docker ─────────────────────────────────────────────
 # docker-compose.override.yml
 

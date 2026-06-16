@@ -154,4 +154,6 @@ pero respeta los valores exactos documentados abajo (es un formato controlado).
 ## Files
 - `Certificado Agua Purificada.dc.html` — prototipo original (fuente de verdad del diseño).
 - `CertificadoAguaPurificada.reference.jsx` — port a React puro, listo para adaptar.
+- `screenshots/certificado-completo.png` — captura de la página completa (referencia visual).
+- `screenshots/certificado-detalle.png` — captura en alta resolución de la cabecera y tablas.
 - `README.md` — este documento (autosuficiente).

@@ -8,13 +8,13 @@ import { Bell, Search, LogOut, User, Shield, ChevronDown } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user, logout, _hasHydrated } = useAuthStore();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) router.push('/login');
-  }, [isAuthenticated, router]);
+    if (_hasHydrated && !isAuthenticated) router.push('/login');
+  }, [_hasHydrated, isAuthenticated, router]);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -25,6 +25,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
+
+  if (!_hasHydrated) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-pharma-600 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   if (!isAuthenticated) return null;
 

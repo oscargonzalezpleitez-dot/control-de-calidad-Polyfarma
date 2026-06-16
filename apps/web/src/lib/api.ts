@@ -31,15 +31,17 @@ api.interceptors.response.use(
         if (!refreshToken) throw new Error('No refresh token');
 
         const response = await axios.post(`${API_URL}/api/v1/auth/refresh`, { refreshToken });
-        const { accessToken } = response.data.data;
+        const { accessToken, refreshToken: newRefreshToken } = response.data.data;
 
         localStorage.setItem('accessToken', accessToken);
+        if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
         return api(originalRequest);
       } catch {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('pharma-auth'); // clear persisted Zustand auth state
         window.location.href = '/login';
         return Promise.reject(error);
       }

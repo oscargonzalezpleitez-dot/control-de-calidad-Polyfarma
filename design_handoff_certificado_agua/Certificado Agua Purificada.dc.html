@@ -156,7 +156,7 @@ class Component extends DCLogic {
     const p = this.props || {};
     const blueData = '#2b6cb0';
     const black = '#000000';
-    const logoUrl = p.logoUrl ?? '';
+    const logoUrl = p.logoUrl ?? 'assets/logo-polyfarma.jpg';
     const hasLogo = !!logoUrl;
     const logoEl = hasLogo
       ? React.createElement('img', {

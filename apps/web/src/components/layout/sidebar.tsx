@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 import {
   LayoutDashboard, FileText, ClipboardList, FileBarChart,
-  Shield, Users, PenLine, Settings, LogOut, ChevronRight,
-  Building2
+  Shield, Users, PenLine, LogOut, ChevronRight,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -32,15 +32,17 @@ export function Sidebar() {
   return (
     <aside className="flex flex-col w-64 bg-pharma-950 h-screen fixed left-0 top-0 z-40">
       {/* Logo */}
-      <div className="flex items-start gap-3 px-5 py-4 border-b border-pharma-900">
-        <div className="w-9 h-9 bg-pharma-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
-          <Building2 className="w-5 h-5 text-white" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-white font-bold text-xs leading-tight uppercase tracking-wide">Polyfarma</p>
-          <p className="text-pharma-400 text-[10px] leading-tight mt-0.5">Lab. Control de Calidad</p>
-          <p className="text-pharma-600 text-[10px] leading-tight mt-0.5 font-medium">Lic. Oscar Gonzalez</p>
-        </div>
+      <div className="flex flex-col items-center px-5 py-4 border-b border-pharma-900">
+        <Image
+          src="/logo-polyfarma.jpg"
+          alt="Laboratorios PolyFarma"
+          width={140}
+          height={90}
+          className="rounded-lg object-contain"
+          priority
+        />
+        <p className="text-pharma-400 text-[10px] leading-tight mt-2 text-center">Lab. Control de Calidad</p>
+        <p className="text-pharma-600 text-[10px] leading-tight mt-0.5 text-center font-medium">Lic. Oscar Gonzalez</p>
       </div>
 
       {/* Navegación */}

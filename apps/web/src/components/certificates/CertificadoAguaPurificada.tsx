@@ -1,5 +1,5 @@
 'use client';
-
+/* eslint-disable @next/next/no-img-element */
 // Implementación de alta fidelidad del Certificado de Análisis de Agua Purificada.
 // Fuente de verdad: design_handoff_certificado_agua/README.md
 // Regla de color: texto pre-impreso → azul; datos llenados identificación → negro negrita;
@@ -52,6 +52,7 @@ export interface CertificadoAguaProps {
   rPseudomona?:   string;
   notaMuestra?:   string;
   codigo?:        string;
+  resultadoFinal?: string;
 }
 
 // ─── Componente principal ─────────────────────────────────────────────────────
@@ -76,6 +77,7 @@ export default function CertificadoAguaPurificada({
   rPseudomona   = '—',
   notaMuestra   = 'El resultado corresponde únicamente a la muestra referida',
   codigo        = 'CC-F-063',
+  resultadoFinal = '',
 }: CertificadoAguaProps) {
 
   const rowsTop = [
@@ -296,7 +298,7 @@ export default function CertificadoAguaPurificada({
             </div>
           </div>
 
-          <div style={{ marginTop: 90, paddingLeft: 60, fontSize: 11 }}>Decisión:</div>
+          <div style={{ marginTop: 90, paddingLeft: 60, fontSize: 11 }}>Decisión: {resultadoFinal && <strong>{resultadoFinal}</strong>}</div>
         </div>
 
         {/* Código de documento — esquina inferior derecha */}

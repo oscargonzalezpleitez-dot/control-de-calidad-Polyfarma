@@ -314,8 +314,8 @@ export default function CertificadosAguaBatchPage() {
       // 1. Obtener formato QC-AGUA-001
       const fmtData: any = await formatsApi.findAll({ status: 'APPROVED', limit: 50 });
       const formats: any[] = fmtData?.data ?? fmtData ?? [];
-      const aguaFormat = formats.find((f: any) => f.code === 'QC-AGUA-001');
-      if (!aguaFormat) throw new Error('Formato QC-AGUA-001 no encontrado. Ejecute el seed de formatos.');
+      const aguaFormat = formats.find((f: any) => f.code === 'CC-F-063');
+      if (!aguaFormat) throw new Error('Formato CC-F-063 no encontrado. Ejecute el seed de formatos.');
 
       // 2. Crear mapa nombre→campo usando el primer registro creado
       let fieldByName: Record<string, any> = {};

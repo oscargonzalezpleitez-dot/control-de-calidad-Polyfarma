@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // standalone solo para Docker. Vercel no lo necesita (lo gestiona internamente).
-  ...(process.env.DOCKER_BUILD === 'true' ? { output: 'standalone' } : {}),
+  output: 'export',
+  trailingSlash: false,
 
   images: {
+    unoptimized: true,
     remotePatterns: [
       { protocol: 'http',  hostname: 'localhost' },
       { protocol: 'https', hostname: '*.railway.app' },
-      { protocol: 'https', hostname: '*.vercel.app' },
       { protocol: 'https', hostname: '*.up.railway.app' },
     ],
   },

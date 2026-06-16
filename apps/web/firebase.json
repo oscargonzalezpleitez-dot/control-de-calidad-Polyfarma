@@ -1,0 +1,46 @@
+{
+  "hosting": {
+    "public": "out",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "/records/*/certificado.txt",
+        "destination": "/records/_/certificado.txt"
+      },
+      {
+        "source": "/records/*.txt",
+        "destination": "/records/_.txt"
+      },
+      {
+        "source": "/records/*/certificado",
+        "destination": "/records/_/certificado.html"
+      },
+      {
+        "source": "/records/**",
+        "destination": "/records/_.html"
+      },
+      {
+        "source": "**",
+        "destination": "/login.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Frame-Options", "value": "DENY" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "X-XSS-Protection", "value": "1; mode=block" }
+        ]
+      },
+      {
+        "source": "/_next/static/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        ]
+      }
+    ]
+  }
+}
