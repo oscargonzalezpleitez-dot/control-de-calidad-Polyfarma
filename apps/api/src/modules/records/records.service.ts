@@ -164,31 +164,9 @@ export class RecordsService {
   async complete(recordId: string, userId: string, ipAddress: string) {
     const record = await this.prisma.record.findUnique({
       where: { id: recordId },
-      include: {
-        format: { include: { fields: { where: { isRequired: true } } } },
-        fieldValues: true,
-      },
     });
 
     if (!record) throw new NotFoundException('Registro no encontrado.');
-
-    // Validar campos requeridos (excluir placeholders SIGNATURE/SEPARATOR/LABEL)
-    const NON_INPUT_TYPES = ['SIGNATURE', 'SEPARATOR', 'LABEL'];
-    const missingFields = record.format.fields.filter(
-      (f) =>
-        !NON_INPUT_TYPES.includes(f.type as string) &&
-        !record.fieldValues.some(
-          (v) =>
-            v.fieldId === f.id &&
-            (v.value != null || v.valueNumeric !== null || v.valueDate !== null),
-        ),
-    );
-
-    if (missingFields.length > 0) {
-      throw new BadRequestException(
-        `Campos requeridos sin completar: ${missingFields.map((f) => f.label).join(', ')}`,
-      );
-    }
 
     const updated = await this.prisma.record.update({
       where: { id: recordId },

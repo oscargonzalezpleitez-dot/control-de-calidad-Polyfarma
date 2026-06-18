@@ -122,12 +122,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </button>
                   </div>
 
-                  {/* Footer GxP */}
-                  <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
-                    <p className="text-[10px] text-gray-400 text-center">
-                      Sesión auditada · 21 CFR Part 11
-                    </p>
-                  </div>
                 </div>
               )}
             </div>
@@ -142,7 +136,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Footer de cumplimiento */}
         <footer className="bg-white border-t border-gray-200 px-6 py-2 flex items-center justify-between text-xs text-gray-400 flex-shrink-0">
           <span className="font-medium text-gray-500">Laboratorio de Control de Calidad Polyfarma v1.0.0 — By Lic. Oscar Gonzalez</span>
-          <span>FDA 21 CFR Part 11 | EU GMP Annex 11 | GAMP 5 | ALCOA+</span>
         </footer>
       </div>
     </div>

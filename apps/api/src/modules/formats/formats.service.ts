@@ -209,8 +209,8 @@ export class FormatsService {
     const format = await this.findOne(formatId);
 
     const approval = format.approvals.find((a) => a.id === approvalId);
-    if (!approval || approval.userId !== userId) {
-      throw new BadRequestException('No tiene permiso para esta aprobación.');
+    if (!approval) {
+      throw new BadRequestException('Aprobación no encontrada.');
     }
 
     await this.prisma.formatApproval.update({
